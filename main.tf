@@ -6,7 +6,7 @@ provider "google" {
 
  terraform {
     backend "gcs" {
-      bucket  = "plex-terraform-state-test-1"
+      bucket  = "plex-terraform-state"
       prefix  = "terraform/state"
     }
   }
