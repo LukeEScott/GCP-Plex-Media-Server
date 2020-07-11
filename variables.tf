@@ -1,7 +1,7 @@
 // Variables
 variable "project" {
 description = "The name of the GCP project."
-default = "development-test-282920"
+default = "my-plex-media-server"
 }
 
 variable "region" {
