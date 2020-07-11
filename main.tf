@@ -119,7 +119,7 @@ resource "google_cloud_scheduler_job" "start_job_weekday" {
 
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/plex-media-server/start?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/start?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
 
   oauth_token {
       service_account_email = google_service_account.cloud_scheduler.email
@@ -136,7 +136,7 @@ resource "google_cloud_scheduler_job" "start_job_weekend" {
 
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/plex-media-server/start?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/start?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
 
   oauth_token {
       service_account_email = google_service_account.cloud_scheduler.email
@@ -153,7 +153,7 @@ resource "google_cloud_scheduler_job" "stop_job" {
 
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/plex-media-server/stop?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/stop?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
 
   oauth_token {
       service_account_email = google_service_account.cloud_scheduler.email
