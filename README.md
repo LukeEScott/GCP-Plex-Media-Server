@@ -22,7 +22,7 @@ Now you need to create a Google Cloud Storage Bucket for your Terraform state to
 
 ![Creation of Bucket](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-11%20at%2022.16.24.png)
 
-## Creating the Terraform Service Account:
+## Create the Terraform Service Account:
 
 Create a service account within the project you created. The service account will need *Editor* & *Project IAM Admin* permissions for the project. Download the JSON file and rename it to 'service_account.json'. Finally move the file into the repo directory.
 
@@ -38,7 +38,7 @@ Create an [App Engine](https://console.cloud.google.com/appengine/start?project=
 
 ![Create App Engine Application](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-10%20at%2021.45.00.png)
 
-## Create a SSH Public Key
+## Create an SSH Public Key
 
 Mac and Linux support SSH connection natively. You just need to generate an SSH key pair (public key/private key) to connect securely to the virtual machine.
 
@@ -60,7 +60,7 @@ Now run the following command:
 ```bash
 cat ~/.ssh/id_rsa.pub
 ```
-It will display the public key in the terminal as shown below - highlight and copy this key. Create a text file called *ssh-keys.txt* and paste the contents of the key - move this file into the repo.
+It will display the public key within the terminal - highlight and copy this key. Create a text file called *ssh-keys.txt* and paste the contents of the key. Finally move the file into the repo directory.
 
 
 ## Initialise Terraform
@@ -70,6 +70,7 @@ Run the following command to initlaise Terraform.
 ```bash
 terraform init
 ```
+
 
 ## Change the config to match your preferences
 
@@ -94,7 +95,7 @@ Once you're happy with the plan, it's time to execute it by running the command
 terraform apply
 ```
 
-This should create 10 different resources. These include a Linux VM, External IP, Firewall Rules, Service Account, Cloud Scheduler Jobs and etc. 
+This should create 10 different resources. These include a Linux VM, External IP, Firewall Rules, Service Account with Roles, Cloud Scheduler Jobs and etc. 
 
 
 
