@@ -210,6 +210,8 @@ Finally, we need to setup *Remote Access* for the server. Navigate to your *Acco
 
 ## Mounting a NAS Drive
 
+FYI - you will most likely need to configure port-forwarding on your router to give your NAS drive an external facing IP address to map to the server.
+
 Firstly, we need to install SSHFS as this is the protocol we're going to use to mount the NAS drive. You can install SSHFS by running the following command:
 
 ```bash
@@ -274,7 +276,7 @@ Now paste the command into the file as seen below:
 
 ```bash
 #!/bin/sh -e
-cat /home/lukeescott/password.txt | sudo -u plex sshfs sshd@94.3.143.130:/mnt/HD/HD_a2/Public/plex-media /mnt/plex-media -o workaround=rename -o password_stdin
+cat /home/<USER>/password.txt | sudo -u plex sshfs <USER>@<NAS-IP>:<NAS-DIRECTORY> /mnt/plex-media -o workaround=rename -o password_stdin
 exit 0
 ```
 Finally, to make the file executable we need to run the below command: 
