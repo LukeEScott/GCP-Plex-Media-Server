@@ -228,25 +228,73 @@ Then to create a new mount point run the following command:
 sudo mkdir plex-media
 ```
 
-Note that the *plex* user needs to have read and execute permission on your media directories. For example, the mount path that you just created */mnt/plex-media*, which is owned by root. Users not in group root can’t access it, so you need to run the following command to give user plex read and execute permission. (I do not recommend changing ownership with chown or chgrp command. Using the setfacl command will suffice.)
-
 ```bash
-sudo setfacl -m u:plex:rx /mnt/plex-media
-```
-You may also need to assign permission on individual media directories like below.
-
-```bash
-sudo setfacl -m u:plex:rx /mnt/plex-media/Films
+cd plex-media
 ```
 
-It can be tempting to add the recursive flag (-R), which gives plex read and execute permission on every file and sub-directory on the drive.
+Note that the *plex* user needs to have read and execute permission on your media directories. For example, the mount path that you just created */mnt/plex-media*, which is owned by root. Users not in group root can’t access it, so you need to run the following command to give user plex read and execute permission (you need to be in /mnt/plex-media directory).
 
 ```bash
-sudo setfacl -R -m u:plex:rx /mnt/plex-media
+sudo chown -R plex .
+```
+Now it's time to mount the NAS drive with the sshfs (this assumes your NAS drive is ssh compatible).Replace *USER* with the username on the NAS and *NAS-IP* with your real NAS IP address. You will also need to replace *NAS-DIRECTORY* with the directory you want to mount from the NAS drive. Lastly, it might ask you for a password if you've set a password on your NAS drive - simply enter the password and hit enter!
+
+```bash
+sudo -u plex sshfs <USER>@<NAS-IP>:<NAS-DIRECTORY> /mnt/plex-media
+```
+EXAMPLE:
+
+```bash
+sudo -u plex sshfs sshd@94.3.143.130:/mnt/HD/HD_a2/Public/plex-media /mnt/plex-media
+```
+![Mount NAS Drive](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-13%20at%2021.39.37.png)
+
+To verify if the NAS drive was actually mounted you can run the command below:
+
+```bash
+sudo -u plex df-hT
+```
+![Check Mount](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-13%20at%2021.44.51.png)
+
+## Automatically Mount Drive on Start-up
+
+The easist way to do this is to create a rc.local file and paste in the command. However, before we do so we need to create a file for the password needed to succesfully mount the drive. Make sure you're within your home directory and run the command below to create the text file. 
+
+```bash
+sudo nano password.txt
+```
+Now add the password to the file. Remember to save a file in Nano text editor, press Ctrl+O, the press Enter to confirm. To exit, press Ctrl+X. Run the following command below to add the password to the file.
+
+Now let's create the *rc.local* - The */etc/rc.local* file on Ubuntu and Debian systems are used to execute commands at system startup. But there's no such file in Ubuntu 18.04 - no problem let's manually create it!
+
+```bash
+sudo nano /etc/rc.local
+```
+Now paste the command into the file as seen below:
+
+```bash
+#!/bin/sh -e
+cat /home/lukeescott/password.txt | sudo -u plex sshfs sshd@94.3.143.130:/mnt/HD/HD_a2/Public/plex-media /mnt/plex-media -o workaround=rename -o password_stdin
+exit 0
+```
+Finally, to make the file executable we need to run the below command: 
+
+```bash
+sudo chmod +x /etc/rc.local
 ```
 
-If your NAS drive is only used for storing media files, then you can do so, but if you have sensitive files on the external hard drive, don’t do it.
+That's it - now when you restart your server it will automatically map the NAS drive!
 
+
+## Creating Plex Libraries
+
+Now it's time to create some libraries for our Films, TV Shows and etc. Firstly, go to your Plex account settings and navigate to the *Manage* section and select *Libraries*. From there select *Add Library* and you should be presented with the below.
+
+![Choose Plex Library](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-13%20at%2021.52.34.png)
+
+For example, let's setup Films! Select *Films* and click *Next* - then you need to select the option *BROWSE FOR MEDIA FOLDER* and finally select *ADD LIBRARY*.
+
+![Select Film Directory](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-13%20at%2021.55.26.png)
 
 
 
