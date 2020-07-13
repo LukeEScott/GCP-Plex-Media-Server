@@ -210,7 +210,7 @@ Finally, we need to setup *Remote Access* for the server. Navigate to your *Acco
 
 ## Mounting a NAS Drive
 
-Firstly, we need to install SSHFS as this is the protocal we're going to use to mount the NAS drive. You can install SSHFS by running the following command:
+Firstly, we need to install SSHFS as this is the protocol we're going to use to mount the NAS drive. You can install SSHFS by running the following command:
 
 ```bash
 sudo apt-get install sshfs
@@ -228,7 +228,24 @@ Then to create a new mount point run the following command:
 sudo mkdir plex-media
 ```
 
+Note that the *plex* user needs to have read and execute permission on your media directories. For example, the mount path that you just created */mnt/plex-media*, which is owned by root. Users not in group root can’t access it, so you need to run the following command to give user plex read and execute permission. (I do not recommend changing ownership with chown or chgrp command. Using the setfacl command will suffice.)
 
+```bash
+sudo setfacl -m u:plex:rx /mnt/plex-media
+```
+You may also need to assign permission on individual media directories like below.
+
+```bash
+sudo setfacl -m u:plex:rx /mnt/plex-media/Films
+```
+
+It can be tempting to add the recursive flag (-R), which gives plex read and execute permission on every file and sub-directory on the drive.
+
+```bash
+sudo setfacl -R -m u:plex:rx /mnt/plex-media
+```
+
+If your NAS drive is only used for storing media files, then you can do so, but if you have sensitive files on the external hard drive, don’t do it.
 
 
 
