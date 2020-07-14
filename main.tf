@@ -16,6 +16,7 @@ resource "google_compute_instance" "plex" {
   name         = "plex-media-server"
   machine_type = "g1-small"
   zone         = var.zone
+  deletion_protection = true
 
   tags = ["http-server", "https-server"]
 
