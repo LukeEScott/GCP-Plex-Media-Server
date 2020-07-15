@@ -107,33 +107,16 @@ resource "google_project_iam_binding" "compute_instance" {
 
 #CLOUD SCHEDULER
 
-resource "google_cloud_scheduler_job" "start_job_weekday" {
-  name             = "Start-VM-Weekday"
-  description      = "This job will start the plex-media-server VM at 4.05pm on weekdays"
-  schedule         = "5 16 * * 1-5"
+resource "google_cloud_scheduler_job" "start_job" {
+  name             = "Start-VM"
+  description      = "This job will start the plex-media-server VM at 8.05am everyday."
+  schedule         = "5 8 * * *"
   time_zone        = "Europe/London"
   attempt_deadline = "320s"
 
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/start?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
-
-  oauth_token {
-      service_account_email = google_service_account.cloud_scheduler.email
-   }
-  }
-}
-
-resource "google_cloud_scheduler_job" "start_job_weekend" {
-  name             = "Start-VM-Weekend"
-  description      = "This job will start the plex-media-server VM at 8.05am on weekends"
-  schedule         = "5 8 * * 6-7"
-  time_zone        = "Europe/London"
-  attempt_deadline = "320s"
-
-  http_target {
-    http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/start?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/start?key=${var.api-key}%20HTTP/1.1"
 
   oauth_token {
       service_account_email = google_service_account.cloud_scheduler.email
@@ -143,14 +126,14 @@ resource "google_cloud_scheduler_job" "start_job_weekend" {
 
 resource "google_cloud_scheduler_job" "stop_job" {
   name             = "Shutdown-VM"
-  description      = "This job will shutdown the plex-media-server VM at midnight"
+  description      = "This job will shutdown the plex-media-server VM at midnight everyday."
   schedule         = "0 0 * * *"
   time_zone        = "Europe/London"
   attempt_deadline = "320s"
 
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/stop?key=AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY%20HTTP/1.1"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/stop?key=${var.api-key}%20HTTP/1.1"
 
   oauth_token {
       service_account_email = google_service_account.cloud_scheduler.email
