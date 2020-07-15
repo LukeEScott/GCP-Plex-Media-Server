@@ -38,6 +38,20 @@ Create an [App Engine](https://console.cloud.google.com/appengine/start?project=
 
 ![Create App Engine Application](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-10%20at%2021.45.00.png)
 
+## Create API Key
+
+Navigate to [API & Services](https://console.cloud.google.com/apis/credentials?project=) and select *Create Credentials*. From the drop-drop menu select *API Key*.
+
+![Create API Key](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-15%20at%2022.00.47.png)
+
+You should then be presented with a dialog box showing you the API key you've just created as seen below:
+
+![API Key Created](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-15%20at%2022.03.52.png)
+
+Copy the key and within the variables.tf file you need to input the value into the *api-key* variable. 
+
+
+
 ## Create an SSH Public Key
 
 Mac and Linux support SSH connection natively. You just need to generate an SSH key pair (public key/private key) to connect securely to the virtual machine.
