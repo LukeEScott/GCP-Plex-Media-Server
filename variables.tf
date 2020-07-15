@@ -18,3 +18,8 @@ variable "name" {
   description = "The name of the VM instance."
   default = "plex-media-server"
 }
+
+variable "api-key" {
+  description = "The API key."
+  default = "AIzaSyD2UHCaIo77GrXsTYBOWxiP_IyuoaRVerY"
+}
