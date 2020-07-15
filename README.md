@@ -109,6 +109,34 @@ After logging into the instance you should see something like below
 
 ![Logging Into VM](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-12%20at%2020.38.53.png)
 
+## Changing the Timezone
+
+By default the VM will be on UTC time but you may want to configure it to your local region. To check the timezone setting run the following command:
+
+```bash
+timedatectl
+```
+![Checking Timzone](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-14%20at%2015.24.13.png)
+
+You can run the command below to see a list of the regions:
+
+```bash
+timedatectl list-timezones
+```
+
+Now run the following command to change the Timezone to your chosen preference. 
+
+```bash
+sudo timedatectl set-timezone <your_time_zone>
+```
+
+EXAMPLE:
+```bash
+sudo timedatectl set-timezone Europe/London
+```
+![BST Timezone](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-14%20at%2015.27.50.png)
+
+
 ## Installing Plex
 
 Go to Plex's server [download page](https://www.plex.tv/media-server-downloads/#plex-media-server), select Linux and right click on Ubuntu (16.04+) / Debian (8+)with 32-bit or 64-bit and select *Copy Link Address'. Go back to the terminal and run the following command:
@@ -123,7 +151,7 @@ Run the command below to verify the Plex deb package has been downloaded.
 ```bash
 ls
 ```
-![ls Command](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-12%20at%2021.05.29.png)
+![ls Command](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-14%20at%2015.37.54.png)
 
 Now it's time to install the Plex deb package by running the following command:
 ```bash
@@ -202,7 +230,7 @@ This HTTP request will be redirected to http://localhost:32400/web on the remote
 
 ![Plex Server Name](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-12%20at%2022.07.23.png)
 
-We're going to setup the libraries in a later step so you can also click *Next* and finally *Done*. 
+We're going to setup the libraries in a later step so you can also click *Next* and then *Done*. 
 
 Finally, we need to setup *Remote Access* for the server. Navigate to your *Account Settings* and select *Remote Access*. Simply select the option *Manually specify public port and then *RETRY*. The Plex server should now be fully accessible outside of the GCP network. 
 
@@ -224,7 +252,7 @@ Now it's time to create a mount point. First we need to get inside the *mnt* dir
 ```bash
 cd /mnt
 ```
-Then to create a new mount point run the following command:
+Then to create a new mount point run the following commands:
 
 ```bash
 sudo mkdir plex-media
@@ -251,7 +279,7 @@ sudo -u plex sshfs sshd@94.3.143.130:/mnt/HD/HD_a2/Public/plex-media /mnt/plex-m
 ```
 ![Mount NAS Drive](https://storage.googleapis.com/plex-terraform-state/GitHub-Images/Screenshot%202020-07-13%20at%2021.39.37.png)
 
-To verify if the NAS drive was actually mounted you can run the command below:
+To verify if the NAS drive was successfully mounted you can run the command below:
 
 ```bash
 sudo -u plex df-hT
