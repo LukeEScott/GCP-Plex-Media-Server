@@ -41,10 +41,6 @@ resource "google_compute_instance" "plex" {
     ssh-keys = file("ssh-key.txt")
   }
 
-  lifecycle {
-    ignore_changes = [attached_disk]
-  }
-
   labels = {
       owner = "terraform"
   }
