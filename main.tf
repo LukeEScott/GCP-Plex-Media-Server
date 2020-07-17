@@ -14,8 +14,9 @@ provider "google" {
 # COMPUTE ENGINE
 resource "google_compute_instance" "plex" {
   name         = "plex-media-server"
-  machine_type = "g1-small"
+  machine_type = "n1-standard-1"
   zone         = var.zone
+  allow_stopping_for_update = true
   deletion_protection = true
 
   tags = ["http-server", "https-server"]
