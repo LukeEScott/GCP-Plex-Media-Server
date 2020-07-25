@@ -110,8 +110,8 @@ resource "google_project_iam_binding" "compute_instance" {
 
 resource "google_cloud_scheduler_job" "start_job" {
   name             = "Start-VM"
-  description      = "This job will start the plex-media-server VM at 8.05am everyday."
-  schedule         = "5 8 * * *"
+  description      = "This job will start the plex-media-server VM at 8.05am weekdays."
+  schedule         = "5 8 * * 1-5"
   time_zone        = "Europe/London"
   attempt_deadline = "320s"
 
@@ -127,8 +127,8 @@ resource "google_cloud_scheduler_job" "start_job" {
 
 resource "google_cloud_scheduler_job" "stop_job" {
   name             = "Shutdown-VM"
-  description      = "This job will shutdown the plex-media-server VM at midnight everyday."
-  schedule         = "0 0 * * *"
+  description      = "This job will shutdown the plex-media-server VM at midnight weekdays."
+  schedule         = "0 0 * * 1-5"
   time_zone        = "Europe/London"
   attempt_deadline = "320s"
 
