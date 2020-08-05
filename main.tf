@@ -128,7 +128,7 @@ resource "google_cloud_scheduler_job" "start_job" {
 resource "google_cloud_scheduler_job" "stop_job" {
   name             = "Shutdown-VM"
   description      = "This job will shutdown the plex-media-server VM at midnight weekdays."
-  schedule         = "0 0 * * 1-5"
+  schedule         = "0 2 * * *"
   time_zone        = "Europe/London"
   attempt_deadline = "320s"
 
