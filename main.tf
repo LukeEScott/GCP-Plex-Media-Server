@@ -14,7 +14,7 @@ provider "google" {
 # COMPUTE ENGINE
 resource "google_compute_instance" "plex" {
   name         = "plex-media-server"
-  machine_type = "n1-standard-1"
+  machine_type = "g1-small"
   zone         = var.zone
   allow_stopping_for_update = true
   deletion_protection = true
@@ -25,7 +25,7 @@ resource "google_compute_instance" "plex" {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-1804-lts"
       type = "pd-standard"
-      size = "10"
+      size = "20"
     }
   }
 
