@@ -22,13 +22,9 @@ resource "google_compute_instance" "plex" {
   tags = ["http-server", "https-server"]
 
   boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-1804-lts"
-      type = "pd-standard"
-      size = "20"
-    }
-  }
-
+    source =  google_compute_disk.plex_disk.self_link
+    auto_delete = false
+}
   network_interface {
     network = "default"
 
@@ -41,10 +37,29 @@ resource "google_compute_instance" "plex" {
    metadata = {
     ssh-keys = file("ssh-key.txt")
   }
+  service_account {
+    email  = "99565581470-compute@developer.gserviceaccount.com"
+    scopes = [
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring.write",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append",
+    ]
+  }
 
   labels = {
       owner = "terraform"
   }
+}
+
+resource "google_compute_disk" "plex_disk" {
+    name  = "plex-hdd"
+    type  = "pd-standard"
+    zone  = var.zone
+    snapshot = "plex-media-server"
+    size = 25
 }
 
 #EXTERNAL IP
@@ -110,14 +125,14 @@ resource "google_project_iam_binding" "compute_instance" {
 
 resource "google_cloud_scheduler_job" "start_job" {
   name             = "Start-VM"
-  description      = "This job will start the plex-media-server VM at 8.05am weekdays."
+  description      = "This job will start the plex-media-server VM at 08:05 AM weekdays."
   schedule         = "5 8 * * *"
   time_zone        = "Europe/London"
   attempt_deadline = "320s"
 
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/start?key=${var.api-key}%20HTTP/1.1"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/${var.zone}/instances/${var.name}/start?key=${var.api-key}%20HTTP/1.1"
 
   oauth_token {
       service_account_email = google_service_account.cloud_scheduler.email
@@ -127,14 +142,14 @@ resource "google_cloud_scheduler_job" "start_job" {
 
 resource "google_cloud_scheduler_job" "stop_job" {
   name             = "Shutdown-VM"
-  description      = "This job will shutdown the plex-media-server VM at midnight weekdays."
+  description      = "This job will shutdown the plex-media-server VM at 02:00 AM weekdays."
   schedule         = "0 2 * * *"
   time_zone        = "Europe/London"
   attempt_deadline = "320s"
 
   http_target {
     http_method = "POST"
-    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/europe-west2-c/instances/${var.name}/stop?key=${var.api-key}%20HTTP/1.1"
+    uri         = "https://compute.googleapis.com/compute/v1/projects/${var.project}/zones/${var.zone}/instances/${var.name}/stop?key=${var.api-key}%20HTTP/1.1"
 
   oauth_token {
       service_account_email = google_service_account.cloud_scheduler.email
